@@ -1,11 +1,17 @@
-﻿namespace Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
 
-public class Enrollment
+namespace Domain.Entities;
+
+public partial class Enrollment
 {
-    public int StudentId { get; set; }
-    public int CourseId { get; set; }
-    public DateTime EnrolledAt { get; set; } = DateTime.UtcNow;
+    public int fk_student_id { get; set; }
 
-    public Student Student { get; set; } = null!;
-    public Course Course { get; set; } = null!;
+    public int fk_course_id { get; set; }
+
+    public DateTime enrolled_at { get; set; }
+
+    public virtual Course fk_course { get; set; } = null!;
+
+    public virtual Student fk_student { get; set; } = null!;
 }

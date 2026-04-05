@@ -13,8 +13,8 @@ public class StudentService(IStudentRepository repository) : IStudentService
 
         var student = new Student
         {
-            Name = request.Name.Trim(),
-            Email = request.Email.Trim().ToLower()
+            name = request.Name.Trim(),
+            email = request.Email.Trim().ToLower()
         };
 
         await repository.AddAsync(student);
@@ -38,8 +38,8 @@ public class StudentService(IStudentRepository repository) : IStudentService
         var student = await repository.GetByIdAsync(id)
             ?? throw new InvalidOperationException($"Student with id {id} not found.");
 
-        student.Name = request.Name.Trim();
-        student.Email = request.Email.Trim().ToLower();
+        student.name = request.Name.Trim();
+        student.email = request.Email.Trim().ToLower();
 
         await repository.UpdateAsync(student);
         return ToResponse(student);
@@ -55,8 +55,8 @@ public class StudentService(IStudentRepository repository) : IStudentService
 
     private static StudentResponse ToResponse(Student student) => new()
     {
-        Id = student.Id,
-        Name = student.Name,
-        Email = student.Email
+        Id = student.pk_student_id,
+        Name = student.name,
+        Email = student.email
     };
 }

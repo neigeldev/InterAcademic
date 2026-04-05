@@ -8,18 +8,18 @@ public class EnrollmentRepository(AppDbContext context) : IEnrollmentRepository
 {
     public async Task<IEnumerable<Enrollment>> GetByStudentIdAsync(int studentId) =>
         await context.Enrollments
-            .Include(e => e.Course)
-                .ThenInclude(c => c.Teacher)
-            .Where(e => e.StudentId == studentId)
+            .Include(e => e.fk_course)
+                .ThenInclude(c => c.fk_teacher)
+            .Where(e => e.fk_student_id == studentId)
             .ToListAsync();
 
     public async Task<bool> ExistsAsync(int studentId, int courseId) =>
         await context.Enrollments
-            .AnyAsync(e => e.StudentId == studentId && e.CourseId == courseId);
+            .AnyAsync(e => e.fk_student_id == studentId && e.fk_course_id == courseId);
 
     public async Task<Enrollment?> GetAsync(int studentId, int courseId) =>
         await context.Enrollments
-            .FirstOrDefaultAsync(e => e.StudentId == studentId && e.CourseId == courseId);
+            .FirstOrDefaultAsync(e => e.fk_student_id == studentId && e.fk_course_id == courseId);
 
     public async Task AddAsync(Enrollment enrollment)
     {

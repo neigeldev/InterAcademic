@@ -1,7 +1,7 @@
 ﻿using Application.DTOs.Common;
 using System.Net;
 using System.Text.Json;
-namespace API.Middlewares;
+namespace API.Middleware;
 
 public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
 {

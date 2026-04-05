@@ -1,4 +1,4 @@
-using API.Middlewares;
+using API.Middleware;
 using Application;
 using Infrastructure;
 using Microsoft.OpenApi.Models;
@@ -46,7 +46,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthentication(); 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ExceptionMiddleware>();

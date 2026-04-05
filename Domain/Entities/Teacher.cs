@@ -1,10 +1,15 @@
-﻿namespace Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
 
-public class Teacher
+namespace Domain.Entities;
+
+public partial class Teacher
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string Email { get; set; } = null!;
+    public int pk_teacher_id { get; set; }
 
-    public ICollection<Course> Courses { get; set; } = new List<Course>();
+    public string name { get; set; } = null!;
+
+    public string email { get; set; } = null!;
+
+    public virtual ICollection<Course> courses { get; set; } = new List<Course>();
 }

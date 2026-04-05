@@ -1,21 +1,31 @@
-﻿using Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace Infrastructure.Persistence.Configurations;
 
 public class CourseConfiguration : IEntityTypeConfiguration<Course>
 {
-    public void Configure(EntityTypeBuilder<Course> builder)
+    public void Configure(EntityTypeBuilder<Course> entity)
     {
-        builder.ToTable("course");
-        builder.HasKey(c => c.Id);
-        builder.Property(c => c.Id).HasColumnName("pk_course_id");
-        builder.Property(c => c.TeacherId).HasColumnName("fk_teacher_id");
-        builder.Property(c => c.CourseName).HasColumnName("course_name").IsRequired();
-        builder.Property(c => c.Credits).HasColumnName("credits");
-        builder.HasOne(c => c.Teacher)
-               .WithMany(t => t.Courses)
-               .HasForeignKey(c => c.TeacherId)
-               .OnDelete(DeleteBehavior.Restrict);
+        entity.HasKey(e => e.pk_course_id).HasName("PRIMARY");
+
+        entity.ToTable("course");
+
+        entity.HasIndex(e => e.fk_teacher_id, "fk_course_teacher");
+
+        entity.Property(e => e.course_name)
+            .HasMaxLength(200);
+
+        entity.HasOne(d => d.fk_teacher)
+            .WithMany(p => p.courses)
+            .HasForeignKey(d => d.fk_teacher_id)
+            .OnDelete(DeleteBehavior.ClientSetNull)
+            .HasConstraintName("fk_course_teacher");
     }
 }

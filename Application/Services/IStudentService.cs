@@ -1,5 +1,4 @@
-﻿// Application/Services/IStudentService.cs
-using Application.DTOs.Student;
+﻿using Application.DTOs.Student;
 namespace Application.Services;
 
 public interface IStudentService

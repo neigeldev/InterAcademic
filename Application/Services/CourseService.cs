@@ -18,9 +18,9 @@ public class CourseService(ICourseRepository repository) : ICourseService
 
     private static CourseResponse ToResponse(Domain.Entities.Course course) => new()
     {
-        Id = course.Id,
-        CourseName = course.CourseName,
-        Credits = course.Credits,
-        TeacherName = course.Teacher.Name
+        Id = course.pk_course_id,
+        CourseName = course.course_name,
+        Credits = course.credits,
+        TeacherName = course.fk_teacher.name
     };
 }

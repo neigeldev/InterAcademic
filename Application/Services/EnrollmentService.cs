@@ -32,28 +32,28 @@ public class EnrollmentService(
             throw new InvalidOperationException("Student is already enrolled in this course.");
 
         // Regla 3: no puede tener dos materias con el mismo profesor
-        var sameTeacher = enrollmentList.Any(e => e.Course.TeacherId == course.TeacherId);
+        var sameTeacher = enrollmentList.Any(e => e.fk_course.fk_teacher_id == course.fk_teacher_id);
         if (sameTeacher)
             throw new InvalidOperationException("Student already has a course with this teacher.");
 
         var enrollment = new Enrollment
         {
-            StudentId = request.StudentId,
-            CourseId = request.CourseId,
-            EnrolledAt = DateTime.UtcNow
+            fk_student_id = request.StudentId,
+            fk_course_id = request.CourseId,
+            enrolled_at = DateTime.UtcNow
         };
 
         await enrollmentRepository.AddAsync(enrollment);
 
         return new EnrollmentResponse
         {
-            StudentId = student.Id,
-            StudentName = student.Name,
-            CourseId = course.Id,
-            CourseName = course.CourseName,
-            TeacherName = course.Teacher.Name,
-            Credits = course.Credits,
-            EnrolledAt = enrollment.EnrolledAt
+            StudentId = student.pk_student_id,
+            StudentName = student.name,
+            CourseId = course.pk_course_id,
+            CourseName = course.course_name,
+            TeacherName = course.fk_teacher.name,
+            Credits = course.credits,
+            EnrolledAt = enrollment.enrolled_at
         };
     }
 
@@ -66,13 +66,13 @@ public class EnrollmentService(
 
         return enrollments.Select(e => new EnrollmentResponse
         {
-            StudentId = student.Id,
-            StudentName = student.Name,
-            CourseId = e.Course.Id,
-            CourseName = e.Course.CourseName,
-            TeacherName = e.Course.Teacher.Name,
-            Credits = e.Course.Credits,
-            EnrolledAt = e.EnrolledAt
+            StudentId = student.pk_student_id,
+            StudentName = student.name,
+            CourseId = e.fk_course.pk_course_id,
+            CourseName = e.fk_course.course_name,
+            TeacherName = e.fk_course.fk_teacher.name,
+            Credits = e.fk_course.credits,
+            EnrolledAt = e.enrolled_at
         });
     }
 

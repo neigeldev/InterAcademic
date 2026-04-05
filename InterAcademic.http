@@ -1,6 +1,0 @@
-@InterAcademic_HostAddress = http://localhost:5208
-
-GET {{InterAcademic_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

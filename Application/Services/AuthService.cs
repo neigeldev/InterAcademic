@@ -1,5 +1,4 @@
-﻿// Application/Services/AuthService.cs
-using Application.DTOs.Auth;
+﻿using Application.DTOs.Auth;
 using Domain.Ports;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -23,9 +22,9 @@ public class AuthService(
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, student.Id.ToString()),
-            new Claim(ClaimTypes.Email,          student.Email),
-            new Claim(ClaimTypes.Name,           student.Name)
+            new Claim(ClaimTypes.NameIdentifier, student.pk_student_id.ToString()),
+            new Claim(ClaimTypes.Email,          student.email),
+            new Claim(ClaimTypes.Name,           student.name)
         };
 
         var token = new JwtSecurityToken(
@@ -39,8 +38,8 @@ public class AuthService(
         return new LoginResponse
         {
             Token = new JwtSecurityTokenHandler().WriteToken(token),
-            Name = student.Name,
-            StudentId = student.Id
+            Name = student.name,
+            StudentId = student.pk_student_id
         };
     }
 }

@@ -15,7 +15,7 @@ public class ClassmateService(
 
         return students.Select(s => new ClassmateResponse
         {
-            Name = s.Name
+            Name = s.name
         });
     }
 }

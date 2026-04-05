@@ -1,11 +1,15 @@
-﻿// Domain/Entities/Student.cs
+﻿using System;
+using System.Collections.Generic;
+
 namespace Domain.Entities;
 
-public class Student
+public partial class Student
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
-    public string Email { get; set; } = null!;
+    public int pk_student_id { get; set; }
 
-    public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+    public string name { get; set; } = null!;
+
+    public string email { get; set; } = null!;
+
+    public virtual ICollection<Enrollment> enrollments { get; set; } = new List<Enrollment>();
 }

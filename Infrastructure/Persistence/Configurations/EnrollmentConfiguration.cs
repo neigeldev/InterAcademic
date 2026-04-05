@@ -1,24 +1,38 @@
-﻿using Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace Infrastructure.Persistence.Configurations;
 
 public class EnrollmentConfiguration : IEntityTypeConfiguration<Enrollment>
 {
-    public void Configure(EntityTypeBuilder<Enrollment> builder)
+    public void Configure(EntityTypeBuilder<Enrollment> entity)
     {
-        builder.ToTable("enrollment");
-        builder.HasKey(e => new { e.StudentId, e.CourseId });
-        builder.Property(e => e.StudentId).HasColumnName("fk_student_id");
-        builder.Property(e => e.CourseId).HasColumnName("fk_course_id");
-        builder.Property(e => e.EnrolledAt).HasColumnName("enrolled_at");
-        builder.HasOne(e => e.Student)
-               .WithMany(s => s.Enrollments)
-               .HasForeignKey(e => e.StudentId)
-               .OnDelete(DeleteBehavior.Cascade);
-        builder.HasOne(e => e.Course)
-               .WithMany(c => c.Enrollments)
-               .HasForeignKey(e => e.CourseId)
-               .OnDelete(DeleteBehavior.Cascade);
+        entity.HasKey(e => new { e.fk_student_id, e.fk_course_id })
+            .HasName("PRIMARY")
+            .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+
+        entity.ToTable("enrollment");
+
+        entity.HasIndex(e => e.fk_course_id, "fk_enrollment_course");
+
+        entity.Property(e => e.enrolled_at)
+            .HasDefaultValueSql("CURRENT_TIMESTAMP")
+            .HasColumnType("datetime");
+
+        entity.HasOne(d => d.fk_course)
+            .WithMany(p => p.enrollments)
+            .HasForeignKey(d => d.fk_course_id)
+            .HasConstraintName("fk_enrollment_course");
+
+        entity.HasOne(d => d.fk_student)
+            .WithMany(p => p.enrollments)
+            .HasForeignKey(d => d.fk_student_id)
+            .HasConstraintName("fk_enrollment_student");
     }
 }

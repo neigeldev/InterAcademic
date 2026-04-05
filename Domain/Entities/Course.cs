@@ -1,12 +1,19 @@
-﻿namespace Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
 
-public class Course
+namespace Domain.Entities;
+
+public partial class Course
 {
-    public int Id { get; set; }
-    public int TeacherId { get; set; }
-    public string CourseName { get; set; } = null!;
-    public int Credits { get; set; }
+    public int pk_course_id { get; set; }
 
-    public Teacher Teacher { get; set; } = null!;
-    public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+    public int fk_teacher_id { get; set; }
+
+    public string course_name { get; set; } = null!;
+
+    public int credits { get; set; }
+
+    public virtual ICollection<Enrollment> enrollments { get; set; } = new List<Enrollment>();
+
+    public virtual Teacher fk_teacher { get; set; } = null!;
 }

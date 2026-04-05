@@ -8,11 +8,11 @@ public class CourseRepository(AppDbContext context) : ICourseRepository
 {
     public async Task<IEnumerable<Course>> GetAllAsync() =>
         await context.Courses
-            .Include(c => c.Teacher)
+            .Include(c => c.fk_teacher)
             .ToListAsync();
 
     public async Task<Course?> GetByIdAsync(int id) =>
         await context.Courses
-            .Include(c => c.Teacher)
-            .FirstOrDefaultAsync(c => c.Id == id);
+            .Include(c => c.fk_teacher)
+            .FirstOrDefaultAsync(c => c.pk_course_id == id);
 }
