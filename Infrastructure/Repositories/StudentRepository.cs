@@ -15,6 +15,10 @@ public class StudentRepository(AppDbContext context) : IStudentRepository
     public async Task<bool> ExistsByEmailAsync(string email) =>
         await context.Students.AnyAsync(s => s.Email == email.ToLower());
 
+    public async Task<Student?> GetByEmailAsync(string email) =>
+    await context.Students
+        .FirstOrDefaultAsync(s => s.Email == email.ToLower());
+
     public async Task AddAsync(Student student)
     {
         await context.Students.AddAsync(student);
@@ -32,4 +36,5 @@ public class StudentRepository(AppDbContext context) : IStudentRepository
         context.Students.Remove(student);
         await context.SaveChangesAsync();
     }
+
 }
