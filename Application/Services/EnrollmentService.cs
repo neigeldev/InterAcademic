@@ -10,15 +10,12 @@ public class EnrollmentService(
 {
     public async Task<EnrollmentResponse> EnrollAsync(EnrollmentRequest request)
     {
-        // Verificar que el estudiante existe
         var student = await studentRepository.GetByIdAsync(request.StudentId)
             ?? throw new InvalidOperationException($"Student with id {request.StudentId} not found.");
 
-        // Verificar que el curso existe
         var course = await courseRepository.GetByIdAsync(request.CourseId)
             ?? throw new InvalidOperationException($"Course with id {request.CourseId} not found.");
 
-        // Traer inscripciones actuales del estudiante
         var currentEnrollments = await enrollmentRepository.GetByStudentIdAsync(request.StudentId);
         var enrollmentList = currentEnrollments.ToList();
 
@@ -32,7 +29,7 @@ public class EnrollmentService(
             throw new InvalidOperationException("Student is already enrolled in this course.");
 
         // Regla 3: no puede tener dos materias con el mismo profesor
-        var sameTeacher = enrollmentList.Any(e => e.fk_course.fk_teacher_id == course.fk_teacher_id);
+        var sameTeacher = enrollmentList.Any(e => e.fk_course != null && e.fk_course.fk_teacher_id == course.fk_teacher_id);
         if (sameTeacher)
             throw new InvalidOperationException("Student already has a course with this teacher.");
 

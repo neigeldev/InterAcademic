@@ -56,13 +56,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors("AllowAngular");
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
-app.UseAuthorization();
+app.UseAuthentication();                
+app.UseAuthorization();                 
 app.MapControllers();
 
 app.Run();

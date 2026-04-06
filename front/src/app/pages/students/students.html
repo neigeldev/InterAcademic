@@ -1,0 +1,133 @@
+<div class="min-h-screen bg-gray-100 px-4 py-10">
+
+  <div class="max-w-5xl mx-auto flex gap-4">
+
+    <!-- Panel izquierdo -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 w-72 p-4 h-fit">
+
+      <div class="flex justify-between items-center mb-3">
+        <span class="font-bold text-gray-900">Estudiantes</span>
+        <span class="bg-[#5292b6] text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+          {{ students.length }}
+        </span>
+      </div>
+
+      <div class="flex flex-col gap-2 mb-3">
+        @for (student of students; track student.id) {
+          <button
+            (click)="selectStudent(student)"
+            [class]="selectedStudent?.id === student.id
+              ? 'flex items-center gap-2 bg-[#5292b6] text-white px-3 py-2 rounded-lg text-sm font-medium w-full text-left'
+              : 'flex items-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium w-full text-left hover:bg-gray-200 transition'">
+            <span>&#127891;</span>
+            {{ student.name }}
+          </button>
+        }
+      </div>
+
+      <button
+        (click)="newRegister()"
+        class="flex items-center gap-2 w-full border border-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm hover:bg-gray-50 transition">
+        <span>&#43;</span> Nuevo Registro
+      </button>
+
+    </div>
+
+    <!-- Panel derecho -->
+    @if (selectedStudent) {
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 flex-1 p-6">
+
+        @if (editing) {
+
+          <h2 class="text-xl font-bold text-gray-900 mb-4">Editar Estudiante</h2>
+
+          @if (error) {
+            <div class="bg-red-50 text-red-600 px-4 py-3 rounded-lg mb-4 text-sm">{{ error }}</div>
+          }
+
+          <div class="mb-4">
+            <label class="block text-sm font-semibold text-gray-800 mb-1">Nombre Completo</label>
+            <input
+              type="text"
+              [(ngModel)]="editName"
+              class="w-full bg-gray-100 border-0 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#5292b6]"
+            />
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-sm font-semibold text-gray-800 mb-1">Correo Electrónico</label>
+            <input
+              type="email"
+              [(ngModel)]="editEmail"
+              class="w-full bg-gray-100 border-0 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#5292b6]"
+            />
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              (click)="cancelEdit()"
+              class="flex-1 border border-gray-300 text-gray-700 py-2 rounded-lg text-sm hover:bg-gray-50 transition">
+              Cancelar
+            </button>
+            <button
+              (click)="saveEdit()"
+              class="flex-1 bg-[#5292b6] text-white py-2 rounded-lg text-sm font-semibold hover:bg-[#4a82a6] transition">
+              Guardar cambios
+            </button>
+          </div>
+
+        } @else {
+
+          <div class="flex justify-between items-start mb-4">
+            <h2 class="text-xl font-bold text-gray-900">{{ selectedStudent.name }}</h2>
+            @if (selectedStudent.id === currentStudentId) {
+              <div class="flex gap-2">
+                <button
+                  (click)="startEdit()"
+                  class="bg-[#5292b6] text-white px-3 py-1 rounded-lg text-xs hover:bg-[#4a82a6] transition">
+                  ✏️ Editar
+                </button>
+                <button
+                  (click)="deleteStudent()"
+                  class="bg-red-500 text-white px-3 py-1 rounded-lg text-xs hover:bg-red-600 transition">
+                  🗑️ Eliminar
+                </button>
+              </div>
+            }
+          </div>
+
+          <div class="flex justify-between bg-gray-100 rounded-lg px-4 py-2 mb-6 text-sm">
+            <span class="text-gray-700 font-medium">Materias inscritas: {{ enrollments.length }}</span>
+            <span class="text-gray-700 font-medium">Créditos totales: {{ totalCredits }}</span>
+          </div>
+
+          <h3 class="font-bold text-gray-900 mb-3">Materias y Compañeros de Clase</h3>
+
+          <div class="flex flex-col gap-3">
+            @for (enrollment of enrollments; track enrollment.courseId) {
+              <div class="border border-gray-200 rounded-xl p-4">
+                <p class="font-semibold text-gray-900 text-sm">{{ enrollment.courseName }}</p>
+                <p class="text-gray-500 text-xs mb-3">{{ enrollment.teacherName }} • {{ enrollment.credits }} créditos</p>
+                <p class="text-xs text-gray-500 font-medium mb-1">Compañeros de clase:</p>
+                @if (classmates[enrollment.courseId]?.length > 0) {
+                  <div class="flex flex-wrap gap-1">
+                    @for (classmate of classmates[enrollment.courseId]; track classmate.name) {
+                      <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">
+                        {{ classmate.name }}
+                      </span>
+                    }
+                  </div>
+                } @else {
+                  <p class="text-xs text-gray-400 italic">Eres el único estudiante en esta materia</p>
+                }
+              </div>
+            }
+          </div>
+
+        }
+
+      </div>
+    }
+
+  </div>
+</div>

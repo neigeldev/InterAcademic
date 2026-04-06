@@ -9,6 +9,7 @@ namespace API.Controllers;
 [Route("api/[controller]")]
 public class StudentsController(IStudentService service) : ControllerBase
 {
+    [AllowAnonymous]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateStudentRequest request)
     {

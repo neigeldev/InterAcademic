@@ -22,7 +22,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
             await WriteResponseAsync(
                 context,
                 HttpStatusCode.InternalServerError,
-                "Esta solicitud falló, contacte a soporte para verificar el motivo."
+                ex.Message  // <- cambia esto temporalmente
             );
         }
     }
