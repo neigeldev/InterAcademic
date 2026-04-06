@@ -1,0 +1,1 @@
+import{Ma as o,Na as n,Va as r,wa as t}from"./chunk-CNNF6R2T.js";var a=class s{static \u0275fac=function(e){return new(e||s)};static \u0275cmp=t({type:s,selectors:[["app-my-courses"]],decls:2,vars:0,template:function(e,c){e&1&&(o(0,"p"),r(1,"my-courses works!"),n())},encapsulation:2})};export{a as MyCourses};

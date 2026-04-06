@@ -1,0 +1,1 @@
+import{Ma as a,Na as n,Va as m,wa as t}from"./chunk-CNNF6R2T.js";var o=class s{static \u0275fac=function(e){return new(e||s)};static \u0275cmp=t({type:s,selectors:[["app-classmates"]],decls:2,vars:0,template:function(e,c){e&1&&(a(0,"p"),m(1,"classmates works!"),n())},encapsulation:2})};export{o as Classmates};

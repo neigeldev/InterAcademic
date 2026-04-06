@@ -1,0 +1,39 @@
+services:
+  back:
+    build:
+      context: back/
+      dockerfile: API/Dockerfile
+    container_name: interacademic.back
+    depends_on:
+      - db
+    ports:
+      - "4000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=interacademic;User=root;Password=Javier26;
+
+  front:
+    build:
+      context: front/
+    container_name: interacademic.front
+    depends_on:
+      - db
+      - back
+    ports:
+      - "3000:80"
+
+  db:
+    image: mysql:8.0
+    container_name: interacademic.db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Javier26
+      MYSQL_DATABASE: interacademic
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql_data:
